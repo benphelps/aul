@@ -19,37 +19,37 @@ namespace Lexer {
         this->read_position += 1;
     }
 
-    Token Lexer::nextToken()
+    Token::Token Lexer::nextToken()
     {
-        Token token;
+        Token::Token token;
 
         switch (this->ch) {
         case '=':
-            token = Token(ASSIGN, TokenLiteral(1, this->ch));
+            token = Token::Token(Token::ASSIGN, Token::TokenLiteral(1, this->ch));
             break;
         case ';':
-            token = Token(SEMICOLON, TokenLiteral(1, this->ch));
+            token = Token::Token(Token::SEMICOLON, Token::TokenLiteral(1, this->ch));
             break;
         case '(':
-            token = Token(LPAREN, TokenLiteral(1, this->ch));
+            token = Token::Token(Token::LPAREN, Token::TokenLiteral(1, this->ch));
             break;
         case ')':
-            token = Token(RPAREN, TokenLiteral(1, this->ch));
+            token = Token::Token(Token::RPAREN, Token::TokenLiteral(1, this->ch));
             break;
         case ',':
-            token = Token(COMMA, TokenLiteral(1, this->ch));
+            token = Token::Token(Token::COMMA, Token::TokenLiteral(1, this->ch));
             break;
         case '+':
-            token = Token(PLUS, TokenLiteral(1, this->ch));
+            token = Token::Token(Token::PLUS, Token::TokenLiteral(1, this->ch));
             break;
         case '{':
-            token = Token(LBRACE, TokenLiteral(1, this->ch));
+            token = Token::Token(Token::LBRACE, Token::TokenLiteral(1, this->ch));
             break;
         case '}':
-            token = Token(RBRACE, TokenLiteral(1, this->ch));
+            token = Token::Token(Token::RBRACE, Token::TokenLiteral(1, this->ch));
             break;
         case 0:
-            token = Token(END_OF_FILE, TokenLiteral(""));
+            token = Token::Token(Token::END_OF_FILE, Token::TokenLiteral(""));
             break;
         }
 

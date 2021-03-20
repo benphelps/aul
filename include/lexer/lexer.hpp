@@ -15,6 +15,6 @@ namespace Lexer {
     public:
         Lexer(string input);
         void readChar();
-        Token nextToken();
+        Token::Token nextToken();
     };
 }
