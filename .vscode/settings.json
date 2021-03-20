@@ -79,5 +79,8 @@
         "variant": "cpp",
         "vector": "cpp",
         "filesystem": "cpp"
-    }
+    },
+    "Lua.diagnostics.disable": [
+        "undefined-global"
+    ]
 }

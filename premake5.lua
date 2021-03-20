@@ -47,7 +47,12 @@ project "Tests"
         "include/"
     }
     files {
+        "include/catch2/catch_amalgamated.cpp",
+        "src/**.cpp",
         "test/**.cpp"
+    }
+    excludes {
+        "src/main.cpp",
     }
     filter "configurations:Debug"
         optimize "Off"
