@@ -50,3 +50,4 @@ _deps
 Makefile
 *.make
 build/
+premake5
