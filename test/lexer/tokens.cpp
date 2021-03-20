@@ -5,7 +5,7 @@ struct TokenTest {
     Lexer::Token::TokenLiteral expectedLiteral;
 };
 
-TEST_CASE("Simple Lexer", "[lexer]" )
+TEST_CASE("Simple Lexer", "[lexer]")
 {
     string input("=+(){},;");
     Lexer::Lexer lexer = Lexer::Lexer(input);
@@ -22,9 +22,9 @@ TEST_CASE("Simple Lexer", "[lexer]" )
         { Lexer::Token::END_OF_FILE, "" },
     };
 
-    SECTION("nextToken iterates through tokens") {
-        for (auto &test : tests)
-        {
+    SECTION("nextToken iterates through tokens")
+    {
+        for (auto& test : tests) {
             Lexer::Token::Token token = lexer.nextToken();
 
             REQUIRE(token.Type == test.expectedType);
@@ -33,7 +33,7 @@ TEST_CASE("Simple Lexer", "[lexer]" )
     }
 }
 
-TEST_CASE("Complete Lexer", "[lexer]" )
+TEST_CASE("Complete Lexer", "[lexer]")
 {
     string input(R""""(
 local five = 5
@@ -52,28 +52,23 @@ local result = add(five, ten)
         { Lexer::Token::IDENT, "five" },
         { Lexer::Token::ASSIGN, "=" },
         { Lexer::Token::INT, "5" },
-        { Lexer::Token::SEMICOLON, ";" },
         { Lexer::Token::LOCAL, "local" },
         { Lexer::Token::IDENT, "ten" },
         { Lexer::Token::ASSIGN, "=" },
         { Lexer::Token::INT, "10" },
-        { Lexer::Token::SEMICOLON, ";" },
         { Lexer::Token::LOCAL, "local" },
         { Lexer::Token::IDENT, "add" },
         { Lexer::Token::ASSIGN, "=" },
-        { Lexer::Token::FUNCTION, "fn" },
+        { Lexer::Token::FUNCTION, "function" },
         { Lexer::Token::LPAREN, "(" },
         { Lexer::Token::IDENT, "x" },
         { Lexer::Token::COMMA, "," },
         { Lexer::Token::IDENT, "y" },
         { Lexer::Token::RPAREN, ")" },
-        { Lexer::Token::LBRACE, "{" },
         { Lexer::Token::IDENT, "x" },
         { Lexer::Token::PLUS, "+" },
         { Lexer::Token::IDENT, "y" },
-        { Lexer::Token::SEMICOLON, ";" },
-        { Lexer::Token::RBRACE, "}" },
-        { Lexer::Token::SEMICOLON, ";" },
+        { Lexer::Token::END, "end" },
         { Lexer::Token::LOCAL, "local" },
         { Lexer::Token::IDENT, "result" },
         { Lexer::Token::ASSIGN, "=" },
@@ -83,13 +78,12 @@ local result = add(five, ten)
         { Lexer::Token::COMMA, "," },
         { Lexer::Token::IDENT, "ten" },
         { Lexer::Token::RPAREN, ")" },
-        { Lexer::Token::SEMICOLON, ";" },
         { Lexer::Token::END_OF_FILE, "" },
     };
 
-    SECTION("nextToken iterates through tokens") {
-        for (auto &test : tests)
-        {
+    SECTION("nextToken iterates through tokens")
+    {
+        for (auto& test : tests) {
             Lexer::Token::Token token = lexer.nextToken();
 
             REQUIRE(token.Type == test.expectedType);

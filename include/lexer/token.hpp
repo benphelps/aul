@@ -1,21 +1,30 @@
 #pragma once
 
+#include <iostream>
+#include <map>
 #include <string>
-#include <stdio.h>
 
+using std::map;
 using std::string;
 
-namespace Lexer {
-    namespace Token {
+namespace Lexer
+{
+    namespace Token
+    {
         typedef string TokenType;
         typedef string TokenLiteral;
 
-        class Token {
+        class Token
+        {
         public:
             TokenType Type;
             TokenLiteral Literal;
 
-            Token(const TokenType &type, const TokenLiteral &literal) : Type(type), Literal(literal) {}
+            Token(const TokenType& type, const TokenLiteral& literal)
+                : Type(type)
+                , Literal(literal)
+            {
+            }
             Token() {};
         };
 
@@ -42,5 +51,12 @@ namespace Lexer {
         // Keywords
         const TokenType FUNCTION("FUNCTION");
         const TokenType LOCAL("LOCAL");
-    }
-}
+        const TokenType END("END");
+
+        const map<string, TokenType> KEYWORDS {
+            { "function", FUNCTION },
+            { "end", END },
+            { "local", LOCAL }
+        };
+    } // namespace Token
+} // namespace Lexer

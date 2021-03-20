@@ -80,6 +80,7 @@
         "vector": "cpp",
         "filesystem": "cpp"
     },
+    "C_Cpp.clang_format_style": "{ BasedOnStyle: WebKit, UseTab: Never, IndentWidth: 4, TabWidth: 4, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 0, AccessModifierOffset: -4, NamespaceIndentation: All, FixNamespaceComments: true, AlwaysBreakAfterReturnType: None }",
     "Lua.diagnostics.disable": [
         "undefined-global"
     ]
