@@ -5,7 +5,7 @@ struct TokenTest {
     Lexer::Token::TokenLiteral expectedLiteral;
 };
 
-TEST_CASE("Simple Lexer", "[lexer]")
+CATCH_TEST_CASE("Simple Lexer", "[lexer]")
 {
     string input("=+(){},;");
     Lexer::Lexer lexer = Lexer::Lexer(input);
@@ -22,18 +22,18 @@ TEST_CASE("Simple Lexer", "[lexer]")
         { Lexer::Token::END_OF_FILE, "" },
     };
 
-    SECTION("nextToken iterates through tokens")
+    CATCH_SECTION("nextToken iterates through tokens")
     {
         for (auto& test : tests) {
             Lexer::Token::Token token = lexer.nextToken();
 
-            REQUIRE(token.Type == test.expectedType);
-            REQUIRE(token.Literal == test.expectedLiteral);
+            CATCH_REQUIRE(token.Type == test.expectedType);
+            CATCH_REQUIRE(token.Literal == test.expectedLiteral);
         }
     }
 }
 
-TEST_CASE("Complete Lexer", "[lexer]")
+CATCH_TEST_CASE("Complete Lexer", "[lexer]")
 {
     string input(R""""(
 local five = 5
@@ -45,6 +45,14 @@ local add = function(x, y)
 end
 
 local result = add(five, ten)
++=-*/%
+3 < 4.5 > 2
+
+if 5 > 10 then
+    return true
+else
+    return false
+end
 )"""");
     Lexer::Lexer lexer = Lexer::Lexer(input);
 
@@ -83,16 +91,38 @@ local result = add(five, ten)
         { Lexer::Token::COMMA, "," },
         { Lexer::Token::IDENT, "ten" },
         { Lexer::Token::RPAREN, ")" },
+        { Lexer::Token::PLUS, "+" },
+        { Lexer::Token::ASSIGN, "=" },
+        { Lexer::Token::MINUS, "-" },
+        { Lexer::Token::ASTERISK, "*" },
+        { Lexer::Token::SLASH, "/" },
+        { Lexer::Token::MODULO, "%" },
+        { Lexer::Token::INT, "3" },
+        { Lexer::Token::LT, "<" },
+        { Lexer::Token::DOUBLE, "4.5" },
+        { Lexer::Token::GT, ">" },
+        { Lexer::Token::INT, "2" },
+        { Lexer::Token::IF, "if" },
+        { Lexer::Token::INT, "5" },
+        { Lexer::Token::GT, ">" },
+        { Lexer::Token::INT, "10" },
+        { Lexer::Token::THEN, "then" },
+        { Lexer::Token::RETURN, "return" },
+        { Lexer::Token::TRUE, "true" },
+        { Lexer::Token::ELSE, "else" },
+        { Lexer::Token::RETURN, "return" },
+        { Lexer::Token::FALSE, "false" },
+        { Lexer::Token::END, "end" },
         { Lexer::Token::END_OF_FILE, "" },
     };
 
-    SECTION("nextToken iterates through tokens")
+    CATCH_SECTION("nextToken iterates through tokens")
     {
         for (auto& test : tests) {
             Lexer::Token::Token token = lexer.nextToken();
 
-            REQUIRE(token.Type == test.expectedType);
-            REQUIRE(token.Literal == test.expectedLiteral);
+            CATCH_REQUIRE(token.Type == test.expectedType);
+            CATCH_REQUIRE(token.Literal == test.expectedLiteral);
         }
     }
 }

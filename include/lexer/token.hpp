@@ -40,6 +40,13 @@ namespace Lexer
         // Operators
         const TokenType ASSIGN("=");
         const TokenType PLUS("+");
+        const TokenType MINUS("-");
+        const TokenType BANG("!");
+        const TokenType ASTERISK("*");
+        const TokenType SLASH("/");
+        const TokenType MODULO("%");
+        const TokenType LT("<");
+        const TokenType GT(">");
 
         // Delimiters
         const TokenType COMMA(",");
@@ -53,11 +60,23 @@ namespace Lexer
         const TokenType FUNCTION("FUNCTION");
         const TokenType LOCAL("LOCAL");
         const TokenType END("END");
+        const TokenType THEN("THEN");
+        const TokenType TRUE("TRUE");
+        const TokenType FALSE("FALSE");
+        const TokenType IF("IF");
+        const TokenType ELSE("ELSE");
+        const TokenType RETURN("RETURN");
 
         const map<string, TokenType> KEYWORDS {
             { "function", FUNCTION },
             { "end", END },
-            { "local", LOCAL }
+            { "local", LOCAL },
+            { "then", THEN },
+            { "true", TRUE },
+            { "false", FALSE },
+            { "if", IF },
+            { "else", ELSE },
+            { "return", RETURN }
         };
     } // namespace Token
 } // namespace Lexer

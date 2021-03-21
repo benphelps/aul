@@ -45,6 +45,21 @@ namespace Lexer
         case '=':
             token = Token::Token(Token::ASSIGN, Token::TokenLiteral(1, this->ch));
             break;
+        case '+':
+            token = Token::Token(Token::PLUS, Token::TokenLiteral(1, this->ch));
+            break;
+        case '-':
+            token = Token::Token(Token::MINUS, Token::TokenLiteral(1, this->ch));
+            break;
+        case '*':
+            token = Token::Token(Token::ASTERISK, Token::TokenLiteral(1, this->ch));
+            break;
+        case '/':
+            token = Token::Token(Token::SLASH, Token::TokenLiteral(1, this->ch));
+            break;
+        case '%':
+            token = Token::Token(Token::MODULO, Token::TokenLiteral(1, this->ch));
+            break;
         case ';':
             token = Token::Token(Token::SEMICOLON, Token::TokenLiteral(1, this->ch));
             break;
@@ -57,14 +72,17 @@ namespace Lexer
         case ',':
             token = Token::Token(Token::COMMA, Token::TokenLiteral(1, this->ch));
             break;
-        case '+':
-            token = Token::Token(Token::PLUS, Token::TokenLiteral(1, this->ch));
-            break;
         case '{':
             token = Token::Token(Token::LBRACE, Token::TokenLiteral(1, this->ch));
             break;
         case '}':
             token = Token::Token(Token::RBRACE, Token::TokenLiteral(1, this->ch));
+            break;
+        case '<':
+            token = Token::Token(Token::LT, Token::TokenLiteral(1, this->ch));
+            break;
+        case '>':
+            token = Token::Token(Token::GT, Token::TokenLiteral(1, this->ch));
             break;
         case 0:
             token = Token::Token(Token::END_OF_FILE, Token::TokenLiteral(""));
