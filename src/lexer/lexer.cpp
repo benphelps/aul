@@ -20,6 +20,14 @@ namespace Lexer
         this->read_position += 1;
     }
 
+    char Lexer::peekChar()
+    {
+        if (this->read_position > this->input.length()) {
+            return 0;
+        }
+        return this->input[this->read_position];
+    }
+
     void Lexer::skipWhitespace()
     {
         while (this->ch == ' ' || this->ch == '\t' || this->ch == '\n' || this->ch == '\r') {
@@ -70,9 +78,9 @@ namespace Lexer
 
                 return token;
             } else if (this->isDigit(this->ch)) {
-                Token::TokenLiteral literal = Token::TokenLiteral(this->readNumber());
-                Token::TokenType type = Token::INT;
-
+                LexedNumber number = this->readNumber();
+                Token::TokenLiteral literal = Token::TokenLiteral(number.value);
+                Token::TokenType type = number.type;
                 token = Token::Token(type, literal);
             } else {
                 token = Token::Token(Token::ILLEGAL, Token::TokenLiteral(1, this->ch));
@@ -93,13 +101,25 @@ namespace Lexer
         return this->input.substr(position, (this->position - position));
     }
 
-    string Lexer::readNumber()
+    LexedNumber Lexer::readNumber()
     {
+        bool have_decimal = false;
         int position = this->position;
-        while (this->isDigit(this->ch)) {
+
+        while (this->isDigit(this->ch) || (have_decimal == false && this->ch == '.' && this->isDigit(this->peekChar()))) {
+            if (this->ch == '.') {
+                have_decimal = true;
+            }
+
             this->readChar();
         }
-        return this->input.substr(position, (this->position - position));
+
+        string value = this->input.substr(position, (this->position - position));
+
+        if (have_decimal) {
+            return LexedNumber(value, Token::DOUBLE);
+        }
+        return LexedNumber(value, Token::INT);
     }
 
     bool Lexer::isLetter(char test)
@@ -109,7 +129,7 @@ namespace Lexer
 
     bool Lexer::isDigit(char test)
     {
-        return '0' <= ch && ch <= '9';
+        return '0' <= test && test <= '9';
     }
 
     Token::TokenType Lexer::lookupIdentifier(Token::TokenLiteral identifier)

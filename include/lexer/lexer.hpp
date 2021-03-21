@@ -8,6 +8,15 @@ using std::string;
 
 namespace Lexer
 {
+    struct LexedNumber {
+        string value;
+        Token::TokenType type;
+
+        LexedNumber(string value, Token::TokenType type)
+            : value(value)
+            , type(type) {};
+    };
+
     class Lexer
     {
     private:
@@ -18,7 +27,8 @@ namespace Lexer
         bool isLetter(char test);
         bool isDigit(char test);
         string readIdentifier();
-        string readNumber();
+        LexedNumber readNumber();
+        char peekChar();
         Token::TokenType lookupIdentifier(Token::TokenLiteral identifier);
 
     public:

@@ -38,6 +38,7 @@ TEST_CASE("Complete Lexer", "[lexer]")
     string input(R""""(
 local five = 5
 local ten = 10
+local half = 0.5
 
 local add = function(x, y)
     x + y
@@ -56,6 +57,10 @@ local result = add(five, ten)
         { Lexer::Token::IDENT, "ten" },
         { Lexer::Token::ASSIGN, "=" },
         { Lexer::Token::INT, "10" },
+        { Lexer::Token::LOCAL, "local" },
+        { Lexer::Token::IDENT, "half" },
+        { Lexer::Token::ASSIGN, "=" },
+        { Lexer::Token::DOUBLE, "0.5" },
         { Lexer::Token::LOCAL, "local" },
         { Lexer::Token::IDENT, "add" },
         { Lexer::Token::ASSIGN, "=" },

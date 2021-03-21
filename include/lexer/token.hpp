@@ -35,6 +35,7 @@ namespace Lexer
         // Identifiers & Literals
         const TokenType IDENT("IDENT");
         const TokenType INT("INT");
+        const TokenType DOUBLE("DOUBLE");
 
         // Operators
         const TokenType ASSIGN("=");
