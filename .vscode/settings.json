@@ -78,10 +78,49 @@
         "utility": "cpp",
         "variant": "cpp",
         "vector": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "clocale": "cpp",
+        "__memory": "cpp"
     },
     "C_Cpp.clang_format_style": "{ BasedOnStyle: WebKit, UseTab: Never, IndentWidth: 4, TabWidth: 4, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 0, AccessModifierOffset: -4, NamespaceIndentation: All, FixNamespaceComments: true, AlwaysBreakAfterReturnType: None }",
     "Lua.diagnostics.disable": [
         "undefined-global"
-    ]
+    ],
+    "files.exclude": {
+        "**/*.d": true,
+        "**/*.slo": true,
+        "**/*.lo": true,
+        "**/*.o": true,
+        "**/*.obj": true,
+        "**/*.gch": true,
+        "**/*.pch": true,
+        "**/*.so": true,
+        "**/*.dylib": true,
+        "**/*.dll": true,
+        "**/*.mod": true,
+        "**/*.smod": true,
+        "**/*.lai": true,
+        "**/*.la": true,
+        "**/*.a": true,
+        "**/*.lib": true,
+        "**/*.exe": true,
+        "**/*.out": true,
+        "**/*.app": true,
+        "**/CMakeLists.txt.user": true,
+        "**/CMakeCache.txt": true,
+        "**/CMakeFiles": true,
+        "**/CMakeScripts": true,
+        "**/Testing": true,
+        "**/Makefile": true,
+        "**/cmake_install.cmake": true,
+        "**/install_manifest.txt": true,
+        "**/compile_commands.json": true,
+        "**/CTestTestfile.cmake": true,
+        "**/_deps": true,
+        "**/.DS_Store": true,
+        "**/*.make": true,
+        "**/build/": true,
+        "**/premake5": true,
+        "**/obj/": true
+    }
 }
