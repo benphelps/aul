@@ -51,3 +51,4 @@ Makefile
 *.make
 build/
 premake5
+obj/
