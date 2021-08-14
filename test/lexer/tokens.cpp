@@ -1,31 +1,33 @@
 #include "test.hpp"
 
+using namespace Aul::Lexer;
+
 struct TokenTest {
-    Lexer::Token::TokenType expectedType;
-    Lexer::Token::TokenLiteral expectedLiteral;
+    TokenType expectedType;
+    TokenLiteral expectedLiteral;
 };
 
 CATCH_TEST_CASE("Simple Lexer", "[lexer]")
 {
     string input("=+(){},;");
-    Lexer::Lexer lexer = Lexer::Lexer(input);
+    Lexer lexer = Lexer(input);
 
     vector<TokenTest> tests {
-        { Lexer::Token::ASSIGN, "=" },
-        { Lexer::Token::PLUS, "+" },
-        { Lexer::Token::LPAREN, "(" },
-        { Lexer::Token::RPAREN, ")" },
-        { Lexer::Token::LBRACE, "{" },
-        { Lexer::Token::RBRACE, "}" },
-        { Lexer::Token::COMMA, "," },
-        { Lexer::Token::SEMICOLON, ";" },
-        { Lexer::Token::END_OF_FILE, "" },
+        { ASSIGN, "=" },
+        { PLUS, "+" },
+        { LPAREN, "(" },
+        { RPAREN, ")" },
+        { LBRACE, "{" },
+        { RBRACE, "}" },
+        { COMMA, "," },
+        { SEMICOLON, ";" },
+        { END_OF_FILE, "" },
     };
 
     CATCH_SECTION("nextToken iterates through tokens")
     {
         for (auto& test : tests) {
-            Lexer::Token::Token token = lexer.nextToken();
+            Token token = lexer.nextToken();
 
             CATCH_REQUIRE(token.Type == test.expectedType);
             CATCH_REQUIRE(token.Literal == test.expectedLiteral);
@@ -45,7 +47,7 @@ local add = function(x, y)
 end
 
 local result = add(five, ten)
-+=-*/%
++=-*/%!
 3 < 4.5 > 2
 
 if 5 > 10 then
@@ -53,73 +55,90 @@ if 5 > 10 then
 else
     return false
 end
+
+1+2==3
+
+10 == 10
+5 != 10
 )"""");
-    Lexer::Lexer lexer = Lexer::Lexer(input);
+    Lexer lexer = Lexer(input);
 
     vector<TokenTest> tests {
-        { Lexer::Token::LOCAL, "local" },
-        { Lexer::Token::IDENT, "five" },
-        { Lexer::Token::ASSIGN, "=" },
-        { Lexer::Token::INT, "5" },
-        { Lexer::Token::LOCAL, "local" },
-        { Lexer::Token::IDENT, "ten" },
-        { Lexer::Token::ASSIGN, "=" },
-        { Lexer::Token::INT, "10" },
-        { Lexer::Token::LOCAL, "local" },
-        { Lexer::Token::IDENT, "half" },
-        { Lexer::Token::ASSIGN, "=" },
-        { Lexer::Token::DOUBLE, "0.5" },
-        { Lexer::Token::LOCAL, "local" },
-        { Lexer::Token::IDENT, "add" },
-        { Lexer::Token::ASSIGN, "=" },
-        { Lexer::Token::FUNCTION, "function" },
-        { Lexer::Token::LPAREN, "(" },
-        { Lexer::Token::IDENT, "x" },
-        { Lexer::Token::COMMA, "," },
-        { Lexer::Token::IDENT, "y" },
-        { Lexer::Token::RPAREN, ")" },
-        { Lexer::Token::IDENT, "x" },
-        { Lexer::Token::PLUS, "+" },
-        { Lexer::Token::IDENT, "y" },
-        { Lexer::Token::END, "end" },
-        { Lexer::Token::LOCAL, "local" },
-        { Lexer::Token::IDENT, "result" },
-        { Lexer::Token::ASSIGN, "=" },
-        { Lexer::Token::IDENT, "add" },
-        { Lexer::Token::LPAREN, "(" },
-        { Lexer::Token::IDENT, "five" },
-        { Lexer::Token::COMMA, "," },
-        { Lexer::Token::IDENT, "ten" },
-        { Lexer::Token::RPAREN, ")" },
-        { Lexer::Token::PLUS, "+" },
-        { Lexer::Token::ASSIGN, "=" },
-        { Lexer::Token::MINUS, "-" },
-        { Lexer::Token::ASTERISK, "*" },
-        { Lexer::Token::SLASH, "/" },
-        { Lexer::Token::MODULO, "%" },
-        { Lexer::Token::INT, "3" },
-        { Lexer::Token::LT, "<" },
-        { Lexer::Token::DOUBLE, "4.5" },
-        { Lexer::Token::GT, ">" },
-        { Lexer::Token::INT, "2" },
-        { Lexer::Token::IF, "if" },
-        { Lexer::Token::INT, "5" },
-        { Lexer::Token::GT, ">" },
-        { Lexer::Token::INT, "10" },
-        { Lexer::Token::THEN, "then" },
-        { Lexer::Token::RETURN, "return" },
-        { Lexer::Token::TRUE, "true" },
-        { Lexer::Token::ELSE, "else" },
-        { Lexer::Token::RETURN, "return" },
-        { Lexer::Token::FALSE, "false" },
-        { Lexer::Token::END, "end" },
-        { Lexer::Token::END_OF_FILE, "" },
+        { LOCAL, "local" },
+        { IDENT, "five" },
+        { ASSIGN, "=" },
+        { INT, "5" },
+        { LOCAL, "local" },
+        { IDENT, "ten" },
+        { ASSIGN, "=" },
+        { INT, "10" },
+        { LOCAL, "local" },
+        { IDENT, "half" },
+        { ASSIGN, "=" },
+        { DOUBLE, "0.5" },
+        { LOCAL, "local" },
+        { IDENT, "add" },
+        { ASSIGN, "=" },
+        { FUNCTION, "function" },
+        { LPAREN, "(" },
+        { IDENT, "x" },
+        { COMMA, "," },
+        { IDENT, "y" },
+        { RPAREN, ")" },
+        { IDENT, "x" },
+        { PLUS, "+" },
+        { IDENT, "y" },
+        { END, "end" },
+        { LOCAL, "local" },
+        { IDENT, "result" },
+        { ASSIGN, "=" },
+        { IDENT, "add" },
+        { LPAREN, "(" },
+        { IDENT, "five" },
+        { COMMA, "," },
+        { IDENT, "ten" },
+        { RPAREN, ")" },
+        { PLUS, "+" },
+        { ASSIGN, "=" },
+        { MINUS, "-" },
+        { ASTERISK, "*" },
+        { SLASH, "/" },
+        { MODULO, "%" },
+        { BANG, "!" },
+        { INT, "3" },
+        { LT, "<" },
+        { DOUBLE, "4.5" },
+        { GT, ">" },
+        { INT, "2" },
+        { IF, "if" },
+        { INT, "5" },
+        { GT, ">" },
+        { INT, "10" },
+        { THEN, "then" },
+        { RETURN, "return" },
+        { TRUE, "true" },
+        { ELSE, "else" },
+        { RETURN, "return" },
+        { FALSE, "false" },
+        { END, "end" },
+        { INT, "1" },
+        { PLUS, "+" },
+        { INT, "2" },
+        { EQ, "==" },
+        { INT, "3" },
+        { INT, "10" },
+        { EQ, "==" },
+        { INT, "10" },
+        { INT, "5" },
+        { NOT_EQ, "!=" },
+        { INT, "10" },
+        { END_OF_FILE, "" },
     };
 
     CATCH_SECTION("nextToken iterates through tokens")
     {
         for (auto& test : tests) {
-            Lexer::Token::Token token = lexer.nextToken();
+            Token token = lexer.nextToken();
 
             CATCH_REQUIRE(token.Type == test.expectedType);
             CATCH_REQUIRE(token.Literal == test.expectedLiteral);

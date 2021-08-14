@@ -1,161 +1,189 @@
 #include "lexer/lexer.hpp"
 
-namespace Lexer
+namespace Aul
 {
-    Lexer::Lexer(string input)
+    namespace Lexer
     {
-        this->input = input;
-        this->readChar();
-    }
+        Lexer::Lexer(string input)
+        {
+            this->input = input;
+            this->readChar();
+        }
 
-    void Lexer::readChar()
-    {
-        if (this->read_position > this->input.length()) {
-            this->ch = 0;
-        } else {
+        void Lexer::readChar()
+        {
+            if (this->read_position > this->input.length()) {
+                this->ch = 0;
+            } else {
+                this->ch = this->input[this->read_position];
+            }
+
+            this->position = this->read_position;
+            this->read_position += 1;
+        }
+
+        void Lexer::stepBack()
+        {
+            this->read_position -= 1;
+            this->position = this->read_position;
             this->ch = this->input[this->read_position];
         }
 
-        this->position = this->read_position;
-        this->read_position += 1;
-    }
-
-    char Lexer::peekChar()
-    {
-        if (this->read_position > this->input.length()) {
-            return 0;
-        }
-        return this->input[this->read_position];
-    }
-
-    void Lexer::skipWhitespace()
-    {
-        while (this->ch == ' ' || this->ch == '\t' || this->ch == '\n' || this->ch == '\r') {
-            this->readChar();
-        }
-    }
-
-    Token::Token Lexer::nextToken()
-    {
-        Token::Token token;
-
-        this->skipWhitespace();
-
-        switch (this->ch) {
-        case '=':
-            token = Token::Token(Token::ASSIGN, Token::TokenLiteral(1, this->ch));
-            break;
-        case '+':
-            token = Token::Token(Token::PLUS, Token::TokenLiteral(1, this->ch));
-            break;
-        case '-':
-            token = Token::Token(Token::MINUS, Token::TokenLiteral(1, this->ch));
-            break;
-        case '*':
-            token = Token::Token(Token::ASTERISK, Token::TokenLiteral(1, this->ch));
-            break;
-        case '/':
-            token = Token::Token(Token::SLASH, Token::TokenLiteral(1, this->ch));
-            break;
-        case '%':
-            token = Token::Token(Token::MODULO, Token::TokenLiteral(1, this->ch));
-            break;
-        case ';':
-            token = Token::Token(Token::SEMICOLON, Token::TokenLiteral(1, this->ch));
-            break;
-        case '(':
-            token = Token::Token(Token::LPAREN, Token::TokenLiteral(1, this->ch));
-            break;
-        case ')':
-            token = Token::Token(Token::RPAREN, Token::TokenLiteral(1, this->ch));
-            break;
-        case ',':
-            token = Token::Token(Token::COMMA, Token::TokenLiteral(1, this->ch));
-            break;
-        case '{':
-            token = Token::Token(Token::LBRACE, Token::TokenLiteral(1, this->ch));
-            break;
-        case '}':
-            token = Token::Token(Token::RBRACE, Token::TokenLiteral(1, this->ch));
-            break;
-        case '<':
-            token = Token::Token(Token::LT, Token::TokenLiteral(1, this->ch));
-            break;
-        case '>':
-            token = Token::Token(Token::GT, Token::TokenLiteral(1, this->ch));
-            break;
-        case 0:
-            token = Token::Token(Token::END_OF_FILE, Token::TokenLiteral(""));
-            break;
-        default:
-            if (this->isLetter(this->ch)) {
-                Token::TokenLiteral literal = Token::TokenLiteral(this->readIdentifier());
-                Token::TokenType type = this->lookupIdentifier(literal);
-
-                token = Token::Token(type, literal);
-
-                return token;
-            } else if (this->isDigit(this->ch)) {
-                LexedNumber number = this->readNumber();
-                Token::TokenLiteral literal = Token::TokenLiteral(number.value);
-                Token::TokenType type = number.type;
-                token = Token::Token(type, literal);
-            } else {
-                token = Token::Token(Token::ILLEGAL, Token::TokenLiteral(1, this->ch));
+        char Lexer::peekChar()
+        {
+            if (this->read_position > this->input.length()) {
+                return 0;
             }
-            break;
+            return this->input[this->read_position];
         }
 
-        this->readChar();
-        return token;
-    }
-
-    string Lexer::readIdentifier()
-    {
-        int position = this->position;
-        while (this->isLetter(this->ch)) {
-            this->readChar();
+        void Lexer::skipWhitespace()
+        {
+            while (this->ch == ' ' || this->ch == '\t' || this->ch == '\n' || this->ch == '\r') {
+                this->readChar();
+            }
         }
-        return this->input.substr(position, (this->position - position));
-    }
 
-    LexedNumber Lexer::readNumber()
-    {
-        bool have_decimal = false;
-        int position = this->position;
+        Token Lexer::nextToken()
+        {
+            Token token;
 
-        while (this->isDigit(this->ch) || (have_decimal == false && this->ch == '.' && this->isDigit(this->peekChar()))) {
-            if (this->ch == '.') {
-                have_decimal = true;
+            this->skipWhitespace();
+
+            switch (this->ch) {
+            case '=':
+                if (this->peekChar() == '=') {
+                    char ch = this->ch;
+                    this->readChar();
+                    TokenLiteral literal = string(1, ch) + string(1, this->ch);
+                    token = Token(EQ, literal);
+                } else {
+                    token = Token(ASSIGN, TokenLiteral(1, this->ch));
+                }
+                break;
+            case '!':
+                if (this->peekChar() == '=') {
+                    char ch = this->ch;
+                    this->readChar();
+                    TokenLiteral literal = string(1, ch) + string(1, this->ch);
+                    token = Token(NOT_EQ, literal);
+                } else {
+                    token = Token(BANG, TokenLiteral(1, this->ch));
+                }
+                break;
+            case '+':
+                token = Token(PLUS, TokenLiteral(1, this->ch));
+                break;
+            case '-':
+                token = Token(MINUS, TokenLiteral(1, this->ch));
+                break;
+            case '*':
+                token = Token(ASTERISK, TokenLiteral(1, this->ch));
+                break;
+            case '/':
+                token = Token(SLASH, TokenLiteral(1, this->ch));
+                break;
+            case '%':
+                token = Token(MODULO, TokenLiteral(1, this->ch));
+                break;
+            case ';':
+                token = Token(SEMICOLON, TokenLiteral(1, this->ch));
+                break;
+            case '(':
+                token = Token(LPAREN, TokenLiteral(1, this->ch));
+                break;
+            case ')':
+                token = Token(RPAREN, TokenLiteral(1, this->ch));
+                break;
+            case ',':
+                token = Token(COMMA, TokenLiteral(1, this->ch));
+                break;
+            case '{':
+                token = Token(LBRACE, TokenLiteral(1, this->ch));
+                break;
+            case '}':
+                token = Token(RBRACE, TokenLiteral(1, this->ch));
+                break;
+            case '<':
+                token = Token(LT, TokenLiteral(1, this->ch));
+                break;
+            case '>':
+                token = Token(GT, TokenLiteral(1, this->ch));
+                break;
+            case 0:
+                token = Token(END_OF_FILE, TokenLiteral(""));
+                break;
+            default:
+                if (this->isLetter(this->ch)) {
+                    TokenLiteral literal = TokenLiteral(this->readIdentifier());
+                    TokenType type = this->lookupIdentifier(literal);
+
+                    token = Token(type, literal);
+
+                    return token;
+                } else if (this->isDigit(this->ch)) {
+                    LexedNumber number = this->readNumber();
+                    TokenLiteral literal = TokenLiteral(number.value);
+                    TokenType type = number.type;
+                    token = Token(type, literal);
+                } else {
+                    token = Token(ILLEGAL, TokenLiteral(1, this->ch));
+                }
+                break;
             }
 
             this->readChar();
+            return token;
         }
 
-        string value = this->input.substr(position, (this->position - position));
-
-        if (have_decimal) {
-            return LexedNumber(value, Token::DOUBLE);
+        string Lexer::readIdentifier()
+        {
+            int position = this->position;
+            while (this->isLetter(this->ch)) {
+                this->readChar();
+            }
+            return this->input.substr(position, (this->position - position));
         }
-        return LexedNumber(value, Token::INT);
-    }
 
-    bool Lexer::isLetter(char test)
-    {
-        return 'a' <= test && test <= 'z' || 'A' <= test && test <= 'Z' || test == '_';
-    }
+        LexedNumber Lexer::readNumber()
+        {
+            bool have_decimal = false;
+            int current_pos = this->position;
 
-    bool Lexer::isDigit(char test)
-    {
-        return '0' <= test && test <= '9';
-    }
+            while (this->isDigit(this->ch) || (!have_decimal && this->ch == '.' && this->isDigit(this->peekChar()))) {
+                if (this->ch == '.') {
+                    have_decimal = true;
+                }
 
-    Token::TokenType Lexer::lookupIdentifier(Token::TokenLiteral identifier)
-    {
-        if (Token::KEYWORDS.contains(identifier)) {
-            return Token::KEYWORDS.find(identifier)->second;
-        };
+                this->readChar();
+            }
 
-        return Token::IDENT;
-    }
-} // namespace Lexer
+            string value = this->input.substr(current_pos, (this->position - current_pos));
+            this->stepBack();
+
+            if (have_decimal) {
+                return LexedNumber(value, DOUBLE);
+            }
+            return LexedNumber(value, INT);
+        }
+
+        bool Lexer::isLetter(char test)
+        {
+            return 'a' <= test && test <= 'z' || 'A' <= test && test <= 'Z' || test == '_';
+        }
+
+        bool Lexer::isDigit(char test)
+        {
+            return '0' <= test && test <= '9';
+        }
+
+        TokenType Lexer::lookupIdentifier(TokenLiteral identifier)
+        {
+            if (KEYWORDS.contains(identifier)) {
+                return KEYWORDS.find(identifier)->second;
+            };
+
+            return IDENT;
+        }
+    } // namespace Lexer
+} // namespace Aul

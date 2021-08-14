@@ -7,9 +7,9 @@
 using std::map;
 using std::string;
 
-namespace Lexer
+namespace Aul
 {
-    namespace Token
+    namespace Lexer
     {
         typedef string TokenType;
         typedef string TokenLiteral;
@@ -48,6 +48,10 @@ namespace Lexer
         const TokenType LT("<");
         const TokenType GT(">");
 
+        // Equality
+        const TokenType EQ("==");
+        const TokenType NOT_EQ("!=");
+
         // Delimiters
         const TokenType COMMA(",");
         const TokenType SEMICOLON(";");
@@ -78,5 +82,7 @@ namespace Lexer
             { "else", ELSE },
             { "return", RETURN }
         };
-    } // namespace Token
-} // namespace Lexer
+    } // namespace Lexer
+} // namespace Aul
+
+std::ostream& operator<<(std::ostream& os, const Aul::Lexer::Token& tk);

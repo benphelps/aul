@@ -6,35 +6,39 @@
 
 using std::string;
 
-namespace Lexer
+namespace Aul
 {
-    struct LexedNumber {
-        string value;
-        Token::TokenType type;
-
-        LexedNumber(string value, Token::TokenType type)
-            : value(value)
-            , type(type) {};
-    };
-
-    class Lexer
+    namespace Lexer
     {
-    private:
-        string input = "";
-        int position = 0;
-        int read_position = 0;
-        char ch = 0;
-        bool isLetter(char test);
-        bool isDigit(char test);
-        string readIdentifier();
-        LexedNumber readNumber();
-        char peekChar();
-        Token::TokenType lookupIdentifier(Token::TokenLiteral identifier);
+        struct LexedNumber {
+            string value;
+            TokenType type;
 
-    public:
-        Lexer(string input);
-        void readChar();
-        void skipWhitespace();
-        Token::Token nextToken();
-    };
-} // namespace Lexer
+            LexedNumber(string value, TokenType type)
+                : value(value)
+                , type(type) {};
+        };
+
+        class Lexer
+        {
+        private:
+            string input = "";
+            int position = 0;
+            int read_position = 0;
+            char ch = 0;
+            bool isLetter(char test);
+            bool isDigit(char test);
+            string readIdentifier();
+            LexedNumber readNumber();
+            char peekChar();
+            TokenType lookupIdentifier(TokenLiteral identifier);
+
+        public:
+            Lexer(string input);
+            void readChar();
+            void stepBack();
+            void skipWhitespace();
+            Token nextToken();
+        };
+    } // namespace Lexer
+} // namespace Aul
