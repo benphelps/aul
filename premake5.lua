@@ -24,7 +24,8 @@ workspace "Build"
         optimize "Speed"
     filter {}
     includedirs {
-        "include/"
+        "include/",
+        "libs/"
     }
     objdir "build/obj"
     targetdir "build/%{cfg.architecture}/%{cfg.buildcfg}"
@@ -52,7 +53,7 @@ project "Repl"
 project "Tests"
     kind "ConsoleApp"
     files {
-        "include/catch2/catch_amalgamated.cpp",
+        "libs/catch2/catch_amalgamated.cpp",
         "src/**.cpp",
         "test/**.cpp"
     }
