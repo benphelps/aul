@@ -7,8 +7,8 @@ using namespace std::string_literals;
 using std::string;
 using std::vector;
 
-using Aul::Lexer::Token;
-using Aul::Lexer::TokenLiteral;
+using Aul::Token;
+using Aul::TokenLiteral;
 
 namespace Aul
 {

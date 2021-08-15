@@ -3,7 +3,7 @@
 
 #include "aul.hpp"
 
-using namespace Aul::Lexer;
+using namespace Aul;
 
 void my_handler(int s)
 {

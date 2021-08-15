@@ -5,25 +5,22 @@
 #include "lexer/token.hpp"
 
 using Aul::AST::Program;
-using Aul::Lexer::Lexer;
+using Aul::Lexer;
 
 namespace Aul
 {
-    namespace Parser
+    class Parser
     {
-        class Parser
-        {
-        private:
-            ::Lexer lexer;
+    private:
+        Lexer lexer;
 
-        public:
-            Token currentToken;
-            Token peekToken;
+    public:
+        Token currentToken;
+        Token peekToken;
 
-            Parser(::Lexer lexer);
-            void nextToken();
+        Parser(Lexer lexer);
+        void nextToken();
 
-            Program parseProgram();
-        };
-    } // namespace Parser
+        Program parseProgram();
+    };
 } // namespace Aul

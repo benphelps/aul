@@ -1,7 +1,5 @@
 #include "test.hpp"
 
-using namespace Aul::Lexer;
-
 struct TokenTest {
     TokenType expectedType;
     TokenLiteral expectedLiteral;
