@@ -16,6 +16,9 @@ namespace Aul
         int col = 0;
     };
 
+    typedef Expression* (*PrefixParser)();
+    typedef Expression* (*InfixParser)(Expression *);
+
     class Parser
     {
     private:
