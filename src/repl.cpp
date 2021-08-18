@@ -34,10 +34,14 @@ int main(int argc, char const* argv[])
         }
 
         Lexer lexer = Lexer(input);
+        Parser parser = Parser(lexer);
+        Program program = parser.parseProgram();
 
-        for (Token token = lexer.nextToken(); token.type != TokenType::END_OF_FILE; token = lexer.nextToken()) {
-            std::cout << token << std::endl;
-        }
+        // for (Token token = lexer.nextToken(); token.type != TokenType::END_OF_FILE; token = lexer.nextToken()) {
+        //     std::cout << token << std::endl;
+        // }
+
+        std::cout << program.stringLiteral() << std::endl;
 
         std::cout << input << std::endl;
     }

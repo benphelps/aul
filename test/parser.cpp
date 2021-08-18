@@ -18,6 +18,11 @@ void testStatement(StatementTest test, LocalStatement* statement)
     CATCH_REQUIRE(statement->name.value == test.expectedName);
 }
 
+void testStatement(StatementTest test, ReturnStatement* statement)
+{
+    CATCH_REQUIRE(statement->token.type == TokenType::RETURN);
+}
+
 CATCH_TEST_CASE("Test Local Statement", "[parser]")
 {
     string input(R""""(
@@ -46,6 +51,33 @@ local pi = 3.14159
     }
 }
 
+CATCH_TEST_CASE("Test Return Statement", "[parser]")
+{
+    string input(R""""(
+return 5
+return 10
+return 3.14159
+)"""");
+
+    Lexer lexer = Lexer(input);
+    Parser parser = Parser(lexer);
+    Program program = parser.parseProgram();
+
+    CATCH_REQUIRE(parser.errors.size() == 0);
+    CATCH_REQUIRE(program.statements.size() == 3);
+
+    vector<StatementTest> tests {
+        { "return", "5" },
+        { "return", "10" },
+        { "return", "3.14159" },
+    };
+
+    for (size_t i = 0; i < tests.size(); i++) {
+        ReturnStatement* statement = (ReturnStatement*) program.statements[i];
+        StatementTest test = tests[i];
+        testStatement(test, statement);
+    }
+}
 
 CATCH_TEST_CASE("Test Local Statement Errors", "[parser]")
 {

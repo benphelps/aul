@@ -36,6 +36,9 @@ namespace Aul
         case TokenType::LOCAL:
             return this->parseLocalStatement();
             break;
+        case TokenType::RETURN:
+            return this->parseReturnStatement();
+            break;
         default:
             return nullptr;
             break;
@@ -56,6 +59,18 @@ namespace Aul
         if (!this->expectPeek(TokenType::ASSIGN)) {
             return nullptr;
         }
+
+        // while (this->currentTokenIsNot(TokenType::SEMICOLON)) {
+        //     this->nextToken();
+        // }
+
+        return statement;
+    }
+
+    ReturnStatement* Parser::parseReturnStatement()
+    {
+        ReturnStatement* statement = new ReturnStatement();
+        statement->token = this->currentToken;
 
         // while (this->currentTokenIsNot(TokenType::SEMICOLON)) {
         //     this->nextToken();

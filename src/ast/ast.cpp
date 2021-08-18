@@ -4,16 +4,6 @@ namespace Aul
 {
     namespace AST
     {
-        TokenLiteral Statement::tokenLiteral()
-        {
-            return ""s;
-        }
-
-        TokenLiteral Expression::tokenLiteral()
-        {
-            return ""s;
-        }
-
         TokenLiteral Program::tokenLiteral()
         {
             if (this->statements.size() > 0) {
@@ -22,14 +12,15 @@ namespace Aul
             return ""s;
         }
 
-        TokenLiteral Identifier::tokenLiteral()
+        string Program::stringLiteral()
         {
-            return this->token.literal;
-        }
+            stringstream buffer;
 
-        TokenLiteral LocalStatement::tokenLiteral()
-        {
-            return this->token.literal;
+            for (auto&& statement : this->statements) {
+                buffer << statement->stringLiteral();
+            }
+
+            return buffer.str();
         }
     } // namespace AST
 } // namespace Aul

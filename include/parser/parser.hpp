@@ -32,6 +32,7 @@ namespace Aul
         Program parseProgram();
         Statement* parseStatement();
         LocalStatement* parseLocalStatement();
+        ReturnStatement* parseReturnStatement();
 
         void nextToken();
         bool currentTokenIs(TokenType type);

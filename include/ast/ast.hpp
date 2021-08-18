@@ -2,9 +2,11 @@
 
 #include "lexer/token.hpp"
 #include <vector>
+#include <sstream>
 
 using namespace std::string_literals;
 using std::string;
+using std::stringstream;
 using std::vector;
 
 using Aul::Token;
@@ -18,18 +20,21 @@ namespace Aul
         {
         public:
             virtual TokenLiteral tokenLiteral() = 0;
+            virtual string stringLiteral() = 0;
         };
 
         class Statement : public Node
         {
         public:
-            TokenLiteral tokenLiteral();
+            virtual TokenLiteral tokenLiteral() = 0;
+            virtual string stringLiteral() = 0;
         };
 
         class Expression : public Node
         {
         public:
-            TokenLiteral tokenLiteral();
+            virtual TokenLiteral tokenLiteral() = 0;
+            virtual string stringLiteral() = 0;
         };
 
         class Program : public Node
@@ -37,6 +42,10 @@ namespace Aul
         public:
             vector<Statement*> statements;
             TokenLiteral tokenLiteral();
+            string stringLiteral();
+
+            Program() {};
+            Program(vector<Statement*> statements) : statements(statements) { };
         };
 
         class Identifier : public Expression
@@ -46,6 +55,7 @@ namespace Aul
             string value;
 
             TokenLiteral tokenLiteral();
+            string stringLiteral();
 
             Identifier(Token token, string value) : token(token), value(value) { };
             Identifier() { };
@@ -56,11 +66,37 @@ namespace Aul
         public:
             Token token;
             Identifier name;
-            Expression value;
+            Expression* value;
 
             TokenLiteral tokenLiteral();
+            string stringLiteral();
 
             LocalStatement() { };
+            LocalStatement(Token token, Identifier name, Expression* value) : token(token), name(name), value(value) { };
+        };
+
+        class ReturnStatement : public Statement
+        {
+        public:
+            Token token;
+            Expression* value;
+
+            TokenLiteral tokenLiteral();
+            string stringLiteral();
+
+            ReturnStatement() { };
+        };
+
+        class ExpressionStatement : public Statement
+        {
+        public:
+            Token token;
+            Expression* value;
+
+            TokenLiteral tokenLiteral();
+            string stringLiteral();
+
+            ExpressionStatement() { };
         };
 
         class Error : public Expression
@@ -69,6 +105,7 @@ namespace Aul
             Token token;
 
             TokenLiteral tokenLiteral();
+            string stringLiteral();
 
             Error() { };
         };
