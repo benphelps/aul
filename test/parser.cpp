@@ -21,9 +21,9 @@ void testStatement(StatementTest test, LocalStatement* statement)
 CATCH_TEST_CASE("Test Local Statement", "[parser]")
 {
     string input(R""""(
-local five = 5;
-local ten = 10;
-local pi = 3.14159;
+local five = 5
+local ten = 10
+local pi = 3.14159
 )"""");
 
     Lexer lexer = Lexer(input);
@@ -50,8 +50,8 @@ local pi = 3.14159;
 CATCH_TEST_CASE("Test Local Statement Errors", "[parser]")
 {
     string input(R""""(
-local a 10;
-local = 10;
+local a 10
+local = 10
 )"""");
 
     Lexer lexer = Lexer(input);

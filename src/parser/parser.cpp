@@ -57,9 +57,9 @@ namespace Aul
             return nullptr;
         }
 
-        while (this->currentTokenIsNot(TokenType::SEMICOLON)) {
-            this->nextToken();
-        }
+        // while (this->currentTokenIsNot(TokenType::SEMICOLON)) {
+        //     this->nextToken();
+        // }
 
         return statement;
     }
