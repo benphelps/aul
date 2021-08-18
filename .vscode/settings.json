@@ -80,7 +80,16 @@
         "vector": "cpp",
         "filesystem": "cpp",
         "clocale": "cpp",
-        "__memory": "cpp"
+        "__memory": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "condition_variable": "cpp",
+        "numbers": "cpp",
+        "queue": "cpp",
+        "semaphore": "cpp",
+        "*.tcc": "cpp",
+        "memory_resource": "cpp",
+        "stop_token": "cpp"
     },
     "C_Cpp.clang_format_style": "{ BasedOnStyle: WebKit, UseTab: Never, IndentWidth: 4, TabWidth: 4, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 0, AccessModifierOffset: -4, NamespaceIndentation: All, FixNamespaceComments: true, AlwaysBreakAfterReturnType: None }",
     "Lua.diagnostics.disable": [
