@@ -35,7 +35,7 @@ namespace Aul
         class Program : public Node
         {
         public:
-            vector<Statement> statements;
+            vector<Statement*> statements;
             TokenLiteral tokenLiteral();
         };
 
@@ -43,8 +43,12 @@ namespace Aul
         {
         public:
             Token token;
+            string value;
 
             TokenLiteral tokenLiteral();
+
+            Identifier(Token token, string value) : token(token), value(value) { };
+            Identifier() { };
         };
 
         class LocalStatement : public Statement
@@ -55,6 +59,18 @@ namespace Aul
             Expression value;
 
             TokenLiteral tokenLiteral();
+
+            LocalStatement() { };
+        };
+
+        class Error : public Expression
+        {
+        public:
+            Token token;
+
+            TokenLiteral tokenLiteral();
+
+            Error() { };
         };
     } // namespace AST
 } // namespace Aul

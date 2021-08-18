@@ -31,6 +31,9 @@ namespace Aul
         char peekChar();
         TokenType lookupIdentifier(TokenLiteral identifier);
 
+        int current_line = 1;
+        int current_col = 1;
+
     public:
         Lexer(string input);
         void readChar();

@@ -17,19 +17,19 @@ namespace Aul
         TokenLiteral Program::tokenLiteral()
         {
             if (this->statements.size() > 0) {
-                return this->statements.front().tokenLiteral();
+                return this->statements.front()->tokenLiteral();
             }
             return ""s;
         }
 
         TokenLiteral Identifier::tokenLiteral()
         {
-            return this->token.Literal;
+            return this->token.literal;
         }
 
         TokenLiteral LocalStatement::tokenLiteral()
         {
-            return this->token.Literal;
+            return this->token.literal;
         }
     } // namespace AST
 } // namespace Aul

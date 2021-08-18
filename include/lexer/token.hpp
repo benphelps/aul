@@ -5,71 +5,60 @@
 #include <string>
 
 using std::map;
+using std::vector;
 using std::string;
 
 namespace Aul
 {
-    typedef string TokenType;
     typedef string TokenLiteral;
 
-    class Token
-    {
-    public:
-        TokenType Type;
-        TokenLiteral Literal;
+    #define TOKEN_TYPES(_) \
+        _(ILLEGAL) \
+        _(END_OF_FILE) \
+        _(IDENT) \
+        _(INT) \
+        _(DOUBLE) \
+        _(ASSIGN) \
+        _(PLUS) \
+        _(MINUS) \
+        _(BANG) \
+        _(ASTERISK) \
+        _(SLASH) \
+        _(MODULO) \
+        _(LT) \
+        _(GT) \
+        _(EQ) \
+        _(NOT_EQ) \
+        _(COMMA) \
+        _(SEMICOLON) \
+        _(LPAREN) \
+        _(RPAREN) \
+        _(LBRACE) \
+        _(RBRACE) \
+        _(FUNCTION) \
+        _(LOCAL) \
+        _(END) \
+        _(THEN) \
+        _(TRUE) \
+        _(FALSE) \
+        _(IF) \
+        _(ELSE) \
+        _(RETURN)
 
-        Token(const TokenType& type, const TokenLiteral& literal)
-            : Type(type)
-            , Literal(literal)
-        {
-        }
-        Token() {};
+    #define AS_TYPE(_) _,
+    #define AS_TYPE_STR(_) #_,
+
+    typedef enum {
+        TOKEN_TYPES(AS_TYPE)
+    } TokenType;
+
+    static const char* sTokenType[] = {
+    #define X(String) MACROSTR(_),
+        TOKEN_TYPES(AS_TYPE_STR)
+    #undef X
     };
 
-    // Special
-    const TokenType ILLEGAL("ILLEGAL");
-    const TokenType END_OF_FILE("EOF");
-
-    // Identifiers & Literals
-    const TokenType IDENT("IDENT");
-    const TokenType INT("INT");
-    const TokenType DOUBLE("DOUBLE");
-
-    // Operators
-    const TokenType ASSIGN("=");
-    const TokenType PLUS("+");
-    const TokenType MINUS("-");
-    const TokenType BANG("!");
-    const TokenType ASTERISK("*");
-    const TokenType SLASH("/");
-    const TokenType MODULO("%");
-    const TokenType LT("<");
-    const TokenType GT(">");
-
-    // Equality
-    const TokenType EQ("==");
-    const TokenType NOT_EQ("!=");
-
-    // Delimiters
-    const TokenType COMMA(",");
-    const TokenType SEMICOLON(";");
-    const TokenType LPAREN("(");
-    const TokenType RPAREN(")");
-    const TokenType LBRACE("{");
-    const TokenType RBRACE("}");
-
-    // Keywords
-    const TokenType FUNCTION("FUNCTION");
-    const TokenType LOCAL("LOCAL");
-    const TokenType END("END");
-    const TokenType THEN("THEN");
-    const TokenType TRUE("TRUE");
-    const TokenType FALSE("FALSE");
-    const TokenType IF("IF");
-    const TokenType ELSE("ELSE");
-    const TokenType RETURN("RETURN");
-
-    const map<string, TokenType> KEYWORDS {
+    const map<string, TokenType> Keywords {
         { "function", FUNCTION },
         { "end", END },
         { "local", LOCAL },
@@ -80,6 +69,24 @@ namespace Aul
         { "else", ELSE },
         { "return", RETURN }
     };
+
+    class Token
+    {
+    public:
+        TokenLiteral literal;
+        TokenType type;
+
+        int line = 0;
+        int col = 0;
+
+        Token(TokenType type, const TokenLiteral& literal)
+            : type(type)
+            , literal(literal)
+        {
+        }
+        Token() {};
+    };
 } // namespace Aul
 
 std::ostream& operator<<(std::ostream& os, const Aul::Token& tk);
+std::ostream& operator<<(std::ostream& os, const Aul::TokenType& tt);

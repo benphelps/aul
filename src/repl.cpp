@@ -35,7 +35,7 @@ int main(int argc, char const* argv[])
 
         Lexer lexer = Lexer(input);
 
-        for (Token token = lexer.nextToken(); token.Type != END_OF_FILE; token = lexer.nextToken()) {
+        for (Token token = lexer.nextToken(); token.type != TokenType::END_OF_FILE; token = lexer.nextToken()) {
             std::cout << token << std::endl;
         }
 
