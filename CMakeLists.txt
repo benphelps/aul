@@ -14,6 +14,7 @@ file(GLOB aul_src CONFIGURE_DEPENDS
 
 # Setup main repl exec
 add_executable(aul ${aul_src})
+target_link_libraries(aul readline)
 
 # Fetch Catch2 from git
 Include(FetchContent)
