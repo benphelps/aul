@@ -1,8 +1,9 @@
 #pragma once
 
 #include "lexer/token.hpp"
-#include <stdio.h>
+#include <cstdio>
 #include <string>
+#include <utility>
 
 using std::string;
 
@@ -13,29 +14,29 @@ namespace Aul
         TokenType type;
 
         LexedNumber(string value, TokenType type)
-            : value(value)
+            : value(std::move(value))
             , type(type) {};
     };
 
     class Lexer
     {
     private:
-        string input = "";
+        string input;
         int position = 0;
         int read_position = 0;
         char ch = 0;
-        bool isLetter(char test);
-        bool isDigit(char test);
+        static bool isLetter(char test);
+        static bool isDigit(char test);
         string readIdentifier();
         LexedNumber readNumber();
         char peekChar();
-        TokenType lookupIdentifier(TokenLiteral identifier);
+        static TokenType lookupIdentifier(const TokenLiteral& identifier);
 
         int current_line = 1;
         int current_col = 1;
 
     public:
-        Lexer(string input);
+        explicit Lexer(string input);
         void readChar();
         void stepBack();
         void skipWhitespace();

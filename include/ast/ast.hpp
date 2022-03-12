@@ -1,6 +1,7 @@
 #pragma once
 
 #include "lexer/token.hpp"
+#include <utility>
 #include <vector>
 #include <sstream>
 
@@ -12,102 +13,104 @@ using std::vector;
 using Aul::Token;
 using Aul::TokenLiteral;
 
-namespace Aul
+namespace Aul::AST
 {
-    namespace AST
+    class Node
     {
-        class Node
-        {
-        public:
-            virtual TokenLiteral tokenLiteral() = 0;
-            virtual string stringLiteral() = 0;
-        };
+    public:
+        virtual TokenLiteral tokenLiteral() = 0;
+        virtual string stringLiteral() = 0;
+    };
 
-        class Statement : public Node
-        {
-        public:
-            virtual TokenLiteral tokenLiteral() = 0;
-            virtual string stringLiteral() = 0;
-        };
+    class Statement : public Node
+    {
+    public:
+        TokenLiteral tokenLiteral() override = 0;
+        string stringLiteral() override = 0;
+    };
 
-        class Expression : public Node
-        {
-        public:
-            virtual TokenLiteral tokenLiteral() = 0;
-            virtual string stringLiteral() = 0;
-        };
+    class Expression : public Node
+    {
+    public:
+        TokenLiteral tokenLiteral() override = 0;
+        string stringLiteral() override = 0;
+    };
 
-        class Program : public Node
-        {
-        public:
-            vector<Statement*> statements;
-            TokenLiteral tokenLiteral();
-            string stringLiteral();
+    class Program : public Node
+    {
+    public:
+        vector<Statement*> statements;
+        TokenLiteral tokenLiteral() override;
+        string stringLiteral() override;
 
-            Program() {};
-            Program(vector<Statement*> statements) : statements(statements) { };
-        };
+        Program() = default;
+        explicit Program(vector<Statement*> statements) : statements(std::move(statements)) { };
+    };
 
-        class Identifier : public Expression
-        {
-        public:
-            Token token;
-            string value;
+    class Identifier : public Expression
+    {
+    public:
+        Token token;
+        string value;
 
-            TokenLiteral tokenLiteral();
-            string stringLiteral();
+        TokenLiteral tokenLiteral() override;
+        string stringLiteral() override;
 
-            Identifier(Token token, string value) : token(token), value(value) { };
-            Identifier() { };
-        };
+        Identifier(Token token, string value) : token(std::move(token)), value(std::move(value)) { };
+        Identifier() = default;
+    };
 
-        class LocalStatement : public Statement
-        {
-        public:
-            Token token;
-            Identifier name;
-            Expression* value;
+    class LocalStatement : public Statement
+    {
+    public:
+        Token token;
+        Identifier name;
+        Expression* value;
 
-            TokenLiteral tokenLiteral();
-            string stringLiteral();
+        TokenLiteral tokenLiteral() override;
+        string stringLiteral() override;
 
-            LocalStatement() { };
-            LocalStatement(Token token, Identifier name, Expression* value) : token(token), name(name), value(value) { };
-        };
+        LocalStatement() = default;
+        LocalStatement(Token token, Identifier name, Expression* value) : token(std::move(token)), name(std::move(name)), value(value) { };
+    };
 
-        class ReturnStatement : public Statement
-        {
-        public:
-            Token token;
-            Expression* value;
+    class ReturnStatement : public Statement
+    {
+    public:
+        Token token;
+        Expression* value;
 
-            TokenLiteral tokenLiteral();
-            string stringLiteral();
+        TokenLiteral tokenLiteral() override;
+        string stringLiteral() override;
 
-            ReturnStatement() { };
-        };
+        ReturnStatement() = default;
+    };
 
-        class ExpressionStatement : public Statement
-        {
-        public:
-            Token token;
-            Expression* value;
+    class ExpressionStatement : public Statement
+    {
+    public:
+        Token token;
+        Expression* value{};
 
-            TokenLiteral tokenLiteral();
-            string stringLiteral();
+        TokenLiteral tokenLiteral() override;
+        string stringLiteral() override;
 
-            ExpressionStatement() { };
-        };
+        ExpressionStatement() = default;
+    };
 
-        class Error : public Expression
-        {
-        public:
-            Token token;
+    class Error : public Expression
+    {
+    public:
+        Token token;
 
-            TokenLiteral tokenLiteral();
-            string stringLiteral();
+        TokenLiteral tokenLiteral() override {
+            return Expression::tokenLiteral();
+        }
 
-            Error() { };
-        };
-    } // namespace AST
+        string stringLiteral() override {
+            return Expression::stringLiteral();
+        }
+
+        Error() = default;
+    };
 } // namespace Aul

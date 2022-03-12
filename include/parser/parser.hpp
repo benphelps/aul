@@ -30,18 +30,18 @@ namespace Aul
 
         vector<ParserError> errors = { };
 
-        Parser(Lexer lexer);
+        explicit Parser(Lexer lexer);
 
         Program parseProgram();
         Statement* parseStatement();
         LocalStatement* parseLocalStatement();
-        ReturnStatement* parseReturnStatement();
+        ReturnStatement* parseReturnStatement() const;
 
         void nextToken();
-        bool currentTokenIs(TokenType type);
-        bool currentTokenIsNot(TokenType type);
-        bool peekTokenIs(TokenType type);
-        bool peekTokenIsNot(TokenType type);
+        bool currentTokenIs(TokenType type) const;
+        bool currentTokenIsNot(TokenType type) const;
+        bool peekTokenIs(TokenType type) const;
+        bool peekTokenIsNot(TokenType type) const;
         bool expectPeek(TokenType type);
     };
 } // namespace Aul

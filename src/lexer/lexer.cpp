@@ -1,10 +1,12 @@
 #include "lexer/lexer.hpp"
 
+#include <utility>
+
 namespace Aul
 {
     Lexer::Lexer(string input)
     {
-        this->input = input;
+        this->input = std::move(input);
         this->readChar();
     }
 
@@ -62,9 +64,9 @@ namespace Aul
         switch (this->ch) {
         case '=':
             if (this->peekChar() == '=') {
-                char ch = this->ch;
+                char cur_ch = this->ch;
                 this->readChar();
-                TokenLiteral literal = string(1, ch) + string(1, this->ch);
+                TokenLiteral literal = string(1, cur_ch) + string(1, this->ch);
                 token = Token(TokenType::EQ, literal);
             } else {
                 token = Token(TokenType::ASSIGN, TokenLiteral(1, this->ch));
@@ -72,9 +74,9 @@ namespace Aul
             break;
         case '!':
             if (this->peekChar() == '=') {
-                char ch = this->ch;
+                char cur_ch = this->ch;
                 this->readChar();
-                TokenLiteral literal = string(1, ch) + string(1, this->ch);
+                TokenLiteral literal = string(1, cur_ch) + string(1, this->ch);
                 token = Token(TokenType::NOT_EQ, literal);
             } else {
                 token = Token(TokenType::BANG, TokenLiteral(1, this->ch));
@@ -123,14 +125,14 @@ namespace Aul
             token = Token(TokenType::END_OF_FILE, TokenLiteral(""));
             break;
         default:
-            if (this->isLetter(this->ch)) {
+            if (Lexer::isLetter(this->ch)) {
                 TokenLiteral literal = TokenLiteral(this->readIdentifier());
-                TokenType type = this->lookupIdentifier(literal);
+                TokenType type = Lexer::lookupIdentifier(literal);
 
                 token = Token(type, literal);
 
                 return token;
-            } else if (this->isDigit(this->ch)) {
+            } else if (Lexer::isDigit(this->ch)) {
                 LexedNumber number = this->readNumber();
                 TokenLiteral literal = TokenLiteral(number.value);
                 TokenType type = number.type;
@@ -150,11 +152,11 @@ namespace Aul
 
     string Lexer::readIdentifier()
     {
-        int position = this->position;
-        while (this->isLetter(this->ch)) {
+        int cur_position = this->position;
+        while (Lexer::isLetter(this->ch)) {
             this->readChar();
         }
-        return this->input.substr(position, (this->position - position));
+        return this->input.substr(cur_position, (this->position - cur_position));
     }
 
     LexedNumber Lexer::readNumber()
@@ -162,7 +164,7 @@ namespace Aul
         bool have_decimal = false;
         int current_pos = this->position;
 
-        while (this->isDigit(this->ch) || (!have_decimal && this->ch == '.' && this->isDigit(this->peekChar()))) {
+        while (Lexer::isDigit(this->ch) || (!have_decimal && this->ch == '.' && Lexer::isDigit(this->peekChar()))) {
             if (this->ch == '.') {
                 have_decimal = true;
             }
@@ -174,9 +176,9 @@ namespace Aul
         this->stepBack();
 
         if (have_decimal) {
-            return LexedNumber(value, TokenType::DOUBLE);
+            return {value, TokenType::DOUBLE};
         }
-        return LexedNumber(value, TokenType::INT);
+        return {value, TokenType::INT};
     }
 
     bool Lexer::isLetter(char test)
@@ -189,7 +191,7 @@ namespace Aul
         return '0' <= test && test <= '9';
     }
 
-    TokenType Lexer::lookupIdentifier(TokenLiteral identifier)
+    TokenType Lexer::lookupIdentifier(const TokenLiteral& identifier)
     {
         if (Keywords.contains(identifier)) {
             return Keywords.find(identifier)->second;

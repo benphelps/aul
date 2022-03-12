@@ -12,5 +12,5 @@ std::string string_format( const std::string& format, Args ... args )
     auto size = static_cast<size_t>( size_s );
     auto buf = std::make_unique<char[]>( size );
     std::snprintf( buf.get(), size, format.c_str(), args ... );
-    return std::string( buf.get(), buf.get() + size - 1 );
+    return { buf.get(), buf.get() + size - 1 };
 }

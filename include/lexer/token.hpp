@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <utility>
 
 using std::map;
 using std::vector;
@@ -79,12 +80,13 @@ namespace Aul
         int line = 0;
         int col = 0;
 
-        Token(TokenType type, const TokenLiteral& literal)
+        Token(TokenType type, TokenLiteral literal)
             : type(type)
-            , literal(literal)
+            , literal(std::move(literal))
         {
         }
-        Token() {};
+
+        Token() = default;
     };
 } // namespace Aul
 

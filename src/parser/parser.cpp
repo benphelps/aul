@@ -1,9 +1,11 @@
 #include "parser/parser.hpp"
 
+#include <utility>
+
 namespace Aul
 {
     Parser::Parser(::Lexer lexer)
-        : lexer(lexer)
+        : lexer(std::move(lexer))
     {
     }
 
@@ -35,19 +37,16 @@ namespace Aul
         switch (this->currentToken.type) {
         case TokenType::LOCAL:
             return this->parseLocalStatement();
-            break;
         case TokenType::RETURN:
             return this->parseReturnStatement();
-            break;
         default:
             return nullptr;
-            break;
         }
     }
 
     LocalStatement* Parser::parseLocalStatement()
     {
-        LocalStatement* statement = new LocalStatement();
+        auto* statement = new LocalStatement();
         statement->token = this->currentToken;
 
         if (!this->expectPeek(TokenType::IDENT)) {
@@ -67,9 +66,9 @@ namespace Aul
         return statement;
     }
 
-    ReturnStatement* Parser::parseReturnStatement()
+    ReturnStatement* Parser::parseReturnStatement() const
     {
-        ReturnStatement* statement = new ReturnStatement();
+        auto* statement = new ReturnStatement();
         statement->token = this->currentToken;
 
         // while (this->currentTokenIsNot(TokenType::SEMICOLON)) {
@@ -79,22 +78,22 @@ namespace Aul
         return statement;
     }
 
-    bool Parser::currentTokenIs(TokenType type)
+    bool Parser::currentTokenIs(TokenType type) const
     {
         return this->currentToken.type == type;
     }
 
-    bool Parser::currentTokenIsNot(TokenType type)
+    bool Parser::currentTokenIsNot(TokenType type) const
     {
         return this->currentToken.type != type;
     }
 
-    bool Parser::peekTokenIs(TokenType type)
+    bool Parser::peekTokenIs(TokenType type) const
     {
         return this->peekToken.type == type;
     }
 
-    bool Parser::peekTokenIsNot(TokenType type)
+    bool Parser::peekTokenIsNot(TokenType type) const
     {
         return this->peekToken.type != type;
     }

@@ -1,17 +1,14 @@
 #include "ast/ast.hpp"
 
-namespace Aul
+namespace Aul::AST
 {
-    namespace AST
+    TokenLiteral Identifier::tokenLiteral()
     {
-        TokenLiteral Identifier::tokenLiteral()
-        {
-            return this->token.literal;
-        }
+        return this->token.literal;
+    }
 
-        string Identifier::stringLiteral()
-        {
-            return this->value;
-        }
-    } // namespace AST
-} // namespace Aul
+    string Identifier::stringLiteral()
+    {
+        return this->value;
+    }
+} // namespace Aul::AST

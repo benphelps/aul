@@ -6,7 +6,7 @@ namespace Aul
     {
         TokenLiteral Program::tokenLiteral()
         {
-            if (this->statements.size() > 0) {
+            if (!this->statements.empty()) {
                 return this->statements.front()->tokenLiteral();
             }
             return ""s;
