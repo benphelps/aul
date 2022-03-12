@@ -1,24 +1,10 @@
-#include <signal.h>
-#include <stdlib.h>
-
 #include "aul.hpp"
 
 using namespace Aul;
 
-void my_handler(int s)
-{
-    std::cout << std::endl
-              << "goodbye :)" << std::endl;
-    exit(1);
-}
-
 int main(int argc, char const* argv[])
 {
-    struct sigaction sigIntHandler;
-    sigIntHandler.sa_handler = my_handler;
-    sigemptyset(&sigIntHandler.sa_mask);
-    sigIntHandler.sa_flags = 0;
-    sigaction(SIGINT, &sigIntHandler, NULL);
+    Signal::Setup();
 
     while (true) {
         std::cout << "aul > ";
@@ -28,8 +14,7 @@ int main(int argc, char const* argv[])
 
         // handle errors and ctrl + d
         if (!std::cin) {
-            std::cout << std::endl
-                      << "goodbye :)" << std::endl;
+            Signal::Action(SIGQUIT);
             return 0;
         }
 
